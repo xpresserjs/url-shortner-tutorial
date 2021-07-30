@@ -300,31 +300,49 @@ module.exports = {
 
 Next lets modify `index.ejs` file to use the `urls` data provided. Change this section of your `index.ejs` file
 
+Change the table body i.e. `<tbody>`
 ##### FROM
 
-```ejs
-<!-- Url Table-->
-<div class="overflow-x-auto">
-  <table class="mt-10 w-full">
-    <thead class="border-b-2 mb-3">
-    <tr class="text-ble-800 text-left">
-      <th class="px-2">URL</th>
-      <th class="px-2">Short ID</th>
-      <th class="px-2">Clicks</th>
-    </tr>
-    </thead>
-    <tbody class="mt-3">
-    <tr>
-      <td class="p-2">
-        <a href="https://xpressserjs.com/xpress-mongo" class="text-blue-800">
-          https://xpressserjs.com/xpress-mongo</a>
-      </td>
-      <td class="p-2">GMSHDb</td>
-      <td class="p-2">1</td>
-    </tr>
-    </tbody>
-  </table>
-</div>
+```
+<!-- Url Table Body-->
+<tbody class="mt-3">
+<tr>
+  <td class="p-2">
+    <a href="https://xpressserjs.com/xpress-mongo" class="text-blue-800">
+      https://xpressserjs.com/xpress-mongo</a>
+  </td>
+  <td class="p-2">GMSHDb</td>
+  <td class="p-2">1</td>
+</tr>
+</tbody>
 ```
 
+##### TO
+
+```ejs
+<!-- Url Table Body-->
+<tbody class="mt-3">
+<!--Loop Through Urls-->
+<% for(const url of urls) {
+    // Define shortUrl for multiple reference.
+    const shortUrl = "/" + url.shortId;
+%>
+<tr class="text-sm">
+    <td class="p-2">
+        <a href="<%= shortUrl %>" target="_blank" class="text-blue-800">
+            <%= shortUrl %>
+        </a>
+        <br>
+        <small class="text-gray-500"><%= url.url %></small>
+    </td>
+    <td class="p-2"><%= url.shortId %></td>
+    <td class="p-2 text-green-600"><%= url.clicks %></td>
+</tr>
+<% } %>
+</tbody>
+```
+
+Here we are looping through `urls` and display them on the table.
+
+Reload the index page, and you should see the long url that was previously saved to the database.
 
