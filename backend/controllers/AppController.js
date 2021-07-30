@@ -11,8 +11,12 @@ module.exports = {
    * Get Index Page
    * @param {Xpresser.Http} http
    */
-  index(http) {
-    return http.view("index");
+  async index(http) {
+    // Get all urls from db.
+    const urls = await Url.find();
+
+    // Share urls with index.ejs
+    return http.view("index", { urls });
   },
 
   /**

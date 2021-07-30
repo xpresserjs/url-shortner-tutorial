@@ -254,13 +254,13 @@ module.exports = {
 ```
 
 - First, Get the `url` sent by the frontend form.
-- Generate short url using xpresser's randomStr helper.
+- Generate short url using xpresser's `randomStr` helper.
 - Try adding a new document to the database. Logs error or new url document.
 - Redirect back to sender i.e. frontend.
 
 #### Let's test the progress so far.
 
-Run: `node app.js`, visit the url and submit a long url.
+Run: `node app.js`, Then shorten a long url.
 
 A look alike of the log below should show in your log after the request redirects back if successful.
 
@@ -276,5 +276,55 @@ Url {
 }
 ```
 
+The data above is saved to your database but our `index.ejs` does not show it yet. Now let's make our `index.ejs` use
+dynamic values from the database.
+
+Remember our `index.ejs` is rendered by the `AppController@index` controller route action. So that is where we will get
+list of urls from the database and provide it to `index.ejs`
+
+Modify the `index` method in `AppController` to look like so:
+
+```js
+module.exports = {
+  
+  async index(http) {
+    // Get all urls from db.
+    const urls = await Url.find();
+    
+    // Share urls with index.ejs
+    return http.view("index", {urls});
+  },
+
+}
+```
+
+Next lets modify `index.ejs` file to use the `urls` data provided. Change this section of your `index.ejs` file
+
+##### FROM
+
+```ejs
+<!-- Url Table-->
+<div class="overflow-x-auto">
+  <table class="mt-10 w-full">
+    <thead class="border-b-2 mb-3">
+    <tr class="text-ble-800 text-left">
+      <th class="px-2">URL</th>
+      <th class="px-2">Short ID</th>
+      <th class="px-2">Clicks</th>
+    </tr>
+    </thead>
+    <tbody class="mt-3">
+    <tr>
+      <td class="p-2">
+        <a href="https://xpressserjs.com/xpress-mongo" class="text-blue-800">
+          https://xpressserjs.com/xpress-mongo</a>
+      </td>
+      <td class="p-2">GMSHDb</td>
+      <td class="p-2">1</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+```
 
 
