@@ -342,7 +342,8 @@ Change the table body i.e. `<tbody>`
 </tbody>
 ```
 
-Here we are looping through `urls` and display them on the table.
+Here we are looping through `urls` and displaying them on the table.
 
 Reload the index page, and you should see the long url that was previously saved to the database.
 
+![Db results preview](./images/loop_url_preview.png "Db results preview")
