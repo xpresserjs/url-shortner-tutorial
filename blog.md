@@ -17,8 +17,8 @@ Project Boilerplate: Simple App (Hello World, No views)
 
 ## Database
 
-This tutorial will make use of **MongoDB** using **xpress-mongo** a lightweight ODM for Nodejs MongoDB. Note: We assume
-you are already familiar with the MongoDB Ecosystem.
+This tutorial will make use of **MongoDB** using **xpress-mongo** a lightweight ODM for Nodejs MongoDB.
+<br>Note: We assume you are already familiar with the MongoDB Ecosystem.
 
 ### Setup Database Connection
 
@@ -50,7 +50,7 @@ Let's add/modify our apps configuration. Goto File: **config.js**
 
 #### Change Name
 
-- Change project **name** from `Xpresser-Simple-App` to `Url Shortener`
+- Change project **name** from `Xpresser-Simple-App` to `Url Shortener` or any custom name you prefer.
 - Add the database config below to your config file.
 
 ```javascript
@@ -71,13 +71,13 @@ module.exports = {
 
 Let's make an index view. (xpresser supports Ejs by default)
 
-Note: Since we now have xjs-cli in our project, we can use the command `xjs` without npx
+Note: Since we now have xjs-cli in our project, we can use the command `xjs` without npx in our project root
 
 ```shell
 xjs make:view index
 ```
 
-this will create `backend/views/index.ejs`. Paste the code below in it.
+this will create a .ejs file @ `backend/views/index.ejs`. Paste the code below in it.
 
 ```html
 <!DOCTYPE html>
@@ -193,7 +193,7 @@ Your model file should look exactly like
 
 ```javascript
 const {is} = require('xpress-mongo');
-const {DBCollection} = require('@xpresser/xpress-mongo');
+const {DBCollection, is} = require('@xpresser/xpress-mongo');
 
 /**
  * Url Model Class
@@ -215,9 +215,9 @@ module.exports = Url;
 
 ## Add Url
 
-In our **index.ejs** file, the `form` is sent using the POST method to action: `/shorten`
+In our **index.ejs** file, the url `form` is sent via POST method to action: `/shorten`
 
-Lets register path `/shorten` in the **routes.js** file.
+Let's register path `/shorten` in the **routes.js** file.
 
 Add this line to the end your routes file.
 
@@ -232,29 +232,37 @@ This simply means that we want the `shorten` method in `AppController` to handle
 Let's add shorten method to AppController where we will process all data and redirect.
 
 ```javascript
-{
+module.exports = {
   // .... Other Methods ....
-  shorten(http)
-  {
+  async shorten(http) {
+    // Get url from request body.
     const url = http.body("url");
-  
-    const newUrl = await Url.new({ url });
-    console.log(newUrl);
-  
-    return http.redirectBack();
+    // Generate short url using xpresser's randomStr helper.
+    const shortId = http.$("helpers").randomStr(6)
+    
+    try {
+      console.log(
+          await Url.new({url, shortId})
+      )
+    } catch (e) {
+      console.log(e)
+    }
+    
+    return http.redirectBack()
   }
 }
 ```
 
-- First, Get the `url` sent by the frontend.
-- Try adding a new document to the database using xpresser's `randomStr` helper to generate the `shortId`
-- Redirect Back to sender.
+- First, Get the `url` sent by the frontend form.
+- Generate short url using xpresser's randomStr helper.
+- Try adding a new document to the database. Logs error or new url document.
+- Redirect back to sender i.e. frontend.
 
 #### Let's test the progress so far.
 
 Run: `node app.js`, visit the url and submit a long url.
 
-A look alike of the following should show in your log after the request redirects back if successful.
+A look alike of the log below should show in your log after the request redirects back if successful.
 
 ```
 Url {
@@ -266,7 +274,6 @@ Url {
     createdAt: 2021-06-11T12:30:42.064Z
   }
 }
-
 ```
 
 

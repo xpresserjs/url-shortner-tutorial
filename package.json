@@ -10,15 +10,15 @@
     "dev": "nodemon app.js"
   },
   "dependencies": {
-    "@xpresser/xpress-mongo": "^1.0.0",
+    "@xpresser/xpress-mongo": "^1.1.0",
     "nanoid": "^3.1.23",
-    "xpress-mongo": "^1.1.0",
-    "xpresser": "^0.16.1"
+    "xpress-mongo": "^1.4.1",
+    "xpresser": "^0.19.4"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7",
-    "prettier": "^2.3.1",
-    "tailwindcss": "^2.1.4",
+    "nodemon": "^2.0.12",
+    "prettier": "^2.3.2",
+    "tailwindcss": "^2.2.7",
     "xjs-cli": "^0.3.0"
   },
   "engines": {
