@@ -157,7 +157,7 @@ module.exports = {
 
 Run `node app.js` to preview the html in `index.ejs`
 
-![Xpresser Logo](./images/index_preview.png "Xpresser Logo")
+![index_preview.png](https://cdn.hashnode.com/res/hashnode/image/upload/v1627641181079/jpnw1GgRy.png)
 
 ## Making it work
 
