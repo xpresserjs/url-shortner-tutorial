@@ -10,3 +10,5 @@ const router = getInstanceRouter();
  */
 router.get("/", "App@index").name("index");
 router.post("/shorten", "App@shorten");
+router.post("/delete", "App@delete");
+router.get("/:shortId", "App@redirect");

@@ -82,26 +82,35 @@ this will create a .ejs file @ `backend/views/index.ejs`. Paste the code below i
 ```html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
   <title>Xpresser URL Shortener</title>
+
+  <script>
+    function confirmDeleteUrl() {
+      const canDelete = confirm('Are you sure you want to delete this URL?');
+      if (!canDelete) return false;
+    }
+  </script>
 </head>
+
 <body class="bg-gray-100">
 <main class="max-w-2xl mx-auto mt-5">
-  <h2 class="text-2xl font-medium text-center text-gray-500">Short'n Your URL</h2>
+  <h2 class="text-2xl font-medium text-center text-gray-500">Shorten Your URL</h2>
 
   <!-- Input Form -->
-  <form method="post" action="/shorten" class="my-5 flex">
+  <form method="post" action="/shorten" class="my-5 flex mx-2 sm:mx-0">
     <div class="flex-auto">
-      <input type="url" name="url" placeholder="Your long URL" required
-             class="w-full border-l-2 border-t-2 border-b-2 py-2 px-3 text-lg text-blue-800 rounded-l shadow-sm focus:outline-none">
+      <input type="url" name="url" placeholder="Your long URL" required class="w-full border-l-2 border-t-2 border-b-2 py-2 px-3 md:text-lg text-blue-800
+                   rounded-l-lg shadow-sm focus:outline-none">
     </div>
 
     <div class="flex-initial">
-      <button class="py-3 px-3 text-md bg-blue-800 text-white rounded-r shadow-sm focus:outline-none">
+      <button class="md:py-3 py-2.5 px-4 bg-blue-800 text-white rounded-r-lg shadow-sm focus:outline-none">
         Shorten!
       </button>
     </div>
@@ -111,20 +120,33 @@ this will create a .ejs file @ `backend/views/index.ejs`. Paste the code below i
   <div class="overflow-x-auto">
     <table class="mt-10 w-full">
       <thead class="border-b-2 mb-3">
-      <tr class="text-ble-800 text-left">
+      <tr class="text-blue-800 text-left">
         <th class="px-2">URL</th>
         <th class="px-2">Short ID</th>
         <th class="px-2">Clicks</th>
+        <th class="px-2"></th>
       </tr>
       </thead>
+      <!-- Url Table Body-->
       <tbody class="mt-3">
       <tr>
         <td class="p-2">
-          <a href="https://xpressserjs.com/xpress-mongo" class="text-blue-800">
-            https://xpressserjs.com/xpress-mongo</a>
+          <a href="#" target="_blank" class="text-blue-800">
+            /AyXvu
+          </a>
+          <br>
+          <small class="text-gray-500">
+            https://xpresserjs.com/xpress-mongo/events
+          </small>
         </td>
-        <td class="p-2">GMSHDb</td>
-        <td class="p-2">1</td>
+        <td class="p-2">AyXvu</td>
+        <td class="p-2 text-green-600 pl-5">22</td>
+        <td>
+          <form method="POST" action="/delete" onsubmit="return confirmDeleteUrl(this)">
+            <input type="hidden" name="shortId" value="realShortId">
+            <button class="text-red-600">delete</button>
+          </form>
+        </td>
       </tr>
       </tbody>
     </table>
@@ -155,7 +177,8 @@ module.exports = {
 
 ### Preview
 
-Run `node app.js` to preview the html in `index.ejs`
+Run `nodemon app.js` in project root folder and click the server url to preview the html in `index.ejs`
+i.e. [http://localhost:3000](http://localhost:3000)
 
 ![index_preview.png](https://cdn.hashnode.com/res/hashnode/image/upload/v1627641181079/jpnw1GgRy.png)
 
@@ -229,11 +252,10 @@ This simply means that we want the `shorten` method in `AppController` to handle
 
 ## Add shorten method
 
-Let's add shorten method to AppController where we will process all data and redirect.
+Paste the  `shorten` method below in your `AppController`.
 
 ```javascript
 module.exports = {
-  // .... Other Methods ....
   async shorten(http) {
     // Get url from request body.
     const url = http.body("url");
@@ -260,7 +282,10 @@ module.exports = {
 
 #### Let's test the progress so far.
 
-Run: `node app.js`, Then shorten a long url.
+Note: Because we made use of `nodemon` when running `app.js` earlier on, we don't need to refresh our server
+since  `nodemon` does that for you.
+
+Refresh your browser, Then shorten a long url.
 
 A look alike of the log below should show in your log after the request redirects back if successful.
 
@@ -301,6 +326,7 @@ module.exports = {
 Next lets modify `index.ejs` file to use the `urls` data provided. Change this section of your `index.ejs` file
 
 Change the table body i.e. `<tbody>`
+
 ##### FROM
 
 ```
@@ -319,24 +345,32 @@ Change the table body i.e. `<tbody>`
 
 ##### TO
 
-```ejs
+```html
 <!-- Url Table Body-->
 <tbody class="mt-3">
 <!--Loop Through Urls-->
-<% for(const url of urls) {
-    // Define shortUrl for multiple reference.
-    const shortUrl = "/" + url.shortId;
-%>
-<tr class="text-sm">
-    <td class="p-2">
-        <a href="<%= shortUrl %>" target="_blank" class="text-blue-800">
-            <%= shortUrl %>
-        </a>
-        <br>
-        <small class="text-gray-500"><%= url.url %></small>
-    </td>
-    <td class="p-2"><%= url.shortId %></td>
-    <td class="p-2 text-green-600"><%= url.clicks %></td>
+<% for(const url of urls) { const shortUrl = "/" + url.shortId; %>
+<td class="p-2">
+  <a href="<%= shortUrl %>" target="_blank" class="text-blue-800">
+    <%= shortUrl %>
+  </a>
+  <br>
+  <small class="text-gray-500">
+    <%= url.url %>
+  </small>
+</td>
+<td class="p-2">
+  <%= url.shortId %>
+</td>
+<td class="p-2 pl-5 text-green-600">
+  <%= url.clicks %>
+</td>
+<td>
+  <form method="POST" action="/delete" onsubmit="return confirmDeleteUrl(this)">
+    <input type="hidden" name="shortId" value="<%= url.shortId %>">
+    <button class="text-red-600">delete</button>
+  </form>
+</td>
 </tr>
 <% } %>
 </tbody>
@@ -344,6 +378,114 @@ Change the table body i.e. `<tbody>`
 
 Here we are looping through `urls` and displaying them on the table.
 
-Reload the index page, and you should see the long url that was previously saved to the database.
+Reload the index page, and you should see the long urls that was previously saved to the database.
 
-![Db results preview](./images/loop_url_preview.png "Db results preview")
+![loop_url_preview.png](https://cdn.hashnode.com/res/hashnode/image/upload/v1627729457315/sjS2Agq1u.png)
+
+Clicking a shortUrl link will display xpresser's default `404 Error Page` and this is because we haven't declared the
+route that will redirect our short url to it's long url.
+
+## Handling short url request.
+
+Let's create a route that will handle a short url. Add the route below at the end of your routes file.
+
+```js
+router.get("/:shortId", "App@redirect");
+```
+
+This means that we want the `redirect` method in `AppController` to handle GET request sent to `/:shortId`
+<br>Note: `:shortId` in the url indicates a dynamic route parameter.
+
+```
+http://localhost:3000/abcdef
+http://localhost:3000/uvwxyz
+```
+
+Given the example above `:shortId` represents `abcdef` and `uvwxyz`.
+
+### Create the redirect method.
+
+Paste the  `redirect` method below in your `AppController`.
+
+```js
+async
+redirect(http)
+{
+  // Get shortId from request params.
+  const {shortId} = http.params;
+  
+  // find url using shortId
+  const url = await Url.findOne({shortId});
+  
+  // if no url found then send a 404 error message.
+  if (!url) return http.status(404).send(`<h3>Short url not found!</h3>`);
+  
+  // Increment clicks count.
+  await url.updateRaw({
+    $inc: {clicks: 1}
+  });
+  
+  // redirect to long url
+  return http.redirect(url.data.url);
+}
+```
+
+- First, we grab the `shortId` from the route url params.
+- Find the url using xpress-mongo's `findOne` which returns a model instance when found or `null` if not found.
+- If result from db is `null` we return a 404 response.
+- Next, increment the clicks count.
+- Redirect to long url.
+
+Now Refresh your browser and click any of the short links. You will be redirected to the long url and the clicks count
+should update also.
+
+## Delete Url
+
+The delete button when clicked and confirmed will show a `/delete` **404 Error Page** and this is because we haven't
+declared a route & controller action for it yet.
+
+Let's add a POST `/delete` route before our `redirect` route. Your routes file should be looking like.
+
+```js
+const {getInstanceRouter} = require("xpresser");
+/**
+ * See https://xpresserjs.com/router/
+ */
+const router = getInstanceRouter();
+
+/**
+ * Url: "/" points to AppController@index
+ * The index method of the controller.
+ */
+router.get("/", "App@index").name("index");
+router.post("/shorten", "App@shorten");
+router.post("/delete", "App@delete");
+router.get("/:shortId", "App@redirect");
+```
+
+#### Why `delete` before `redirect` route?
+
+If the `/delete` route is placed after the `/:shortId` route, the router will assume the keyword `delete` is
+a  `shortId` route parameter because `/:shortId` was declared first.
+
+### Create the delete method
+
+Paste the `delete` method below in your `AppController`.
+
+```js
+module.exports = {
+  async delete() {
+    // Get shortId from request body.
+    const shortId = http.body("shortId");
+    
+    // Delete from database
+    await Url.native().deleteOne({shortId});
+    
+    return http.redirectBack();
+  }
+}
+```
+
+Refresh your browser and try the delete feature.
+
+##### Hurray!! you now have your own URL shortener Application

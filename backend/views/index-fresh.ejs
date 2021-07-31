@@ -47,35 +47,25 @@
             </thead>
             <!-- Url Table Body-->
             <tbody class="mt-3">
-            <!--Loop Through Urls-->
-            <% for(const url of urls) {
-                // Define shortUrl for multiple reference.
-                const shortUrl = "/" + url.shortId;
-            %>
-            <tr class="text-sm">
+            <tr>
                 <td class="p-2">
-                    <a href="<%= shortUrl %>" target="_blank" class="text-blue-800">
-                        <%= shortUrl %>
+                    <a href="#" target="_blank" class="text-blue-800">
+                        /AyXvu
                     </a>
                     <br>
                     <small class="text-gray-500">
-                        <%= url.url %>
+                        https://xpresserjs.com/xpress-mongo/events
                     </small>
                 </td>
-                <td class="p-2">
-                    <%= url.shortId %>
-                </td>
-                <td class="p-2 pl-5 text-green-600">
-                    <%= url.clicks %>
-                </td>
+                <td class="p-2">AyXvu</td>
+                <td class="p-2 text-green-600 pl-5">22</td>
                 <td>
                     <form method="POST" action="/delete" onsubmit="return confirmDeleteUrl(this)">
-                        <input type="hidden" name="shortId" value="<%= url.shortId %>">
+                        <input type="hidden" name="shortId" value="realShortId">
                         <button class="text-red-600">delete</button>
                     </form>
                 </td>
             </tr>
-            <% } %>
             </tbody>
         </table>
     </div>

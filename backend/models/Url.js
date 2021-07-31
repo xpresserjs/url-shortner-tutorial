@@ -1,10 +1,7 @@
-const { is } = require("xpress-mongo");
-const { DBCollection } = require("@xpresser/xpress-mongo");
+const { is, XMongoModel } = require("xpress-mongo");
+const { UseCollection } = require("@xpresser/xpress-mongo");
 
-/**
- * Url Model Class
- */
-class Url extends DBCollection("urls") {
+class Url extends XMongoModel {
   // Set Model Schema
   static schema = {
     url: is.String().required(),
@@ -13,5 +10,9 @@ class Url extends DBCollection("urls") {
     createdAt: is.Date().required()
   };
 }
+
+// Map Model to Collection.
+// .native() will be made available for use.
+UseCollection(Url, "urls");
 
 module.exports = Url;
