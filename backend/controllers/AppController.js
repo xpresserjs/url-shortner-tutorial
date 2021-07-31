@@ -12,7 +12,7 @@ module.exports = {
     const urls = await Url.find();
 
     // Render index.ejs with urls
-    return http.view("index-fresh", { urls });
+    return http.view("index", { urls });
   },
 
   async shorten(http) {

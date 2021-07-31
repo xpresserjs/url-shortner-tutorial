@@ -352,27 +352,28 @@ Change the table body i.e. `<tbody>`
 <tbody class="mt-3">
 <!--Loop Through Urls-->
 <% for(const url of urls) { const shortUrl = "/" + url.shortId; %>
-<td class="p-2">
-  <a href="<%= shortUrl %>" target="_blank" class="text-blue-800">
-    <%= shortUrl %>
-  </a>
-  <br>
-  <small class="text-gray-500">
-    <%= url.url %>
-  </small>
-</td>
-<td class="p-2">
-  <%= url.shortId %>
-</td>
-<td class="p-2 pl-5 text-green-600">
-  <%= url.clicks %>
-</td>
-<td>
-  <form method="POST" action="/delete" onsubmit="return confirmDeleteUrl(this)">
-    <input type="hidden" name="shortId" value="<%= url.shortId %>">
-    <button class="text-red-600">delete</button>
-  </form>
-</td>
+<tr>
+  <td class="p-2">
+    <a href="<%= shortUrl %>" target="_blank" class="text-blue-800">
+      <%= shortUrl %>
+    </a>
+    <br>
+    <small class="text-gray-500">
+      <%= url.url %>
+    </small>
+  </td>
+  <td class="p-2">
+    <%= url.shortId %>
+  </td>
+  <td class="p-2 pl-5 text-green-600">
+    <%= url.clicks %>
+  </td>
+  <td>
+    <form method="POST" action="/delete" onsubmit="return confirmDeleteUrl(this)">
+      <input type="hidden" name="shortId" value="<%= url.shortId %>">
+      <button class="text-red-600">delete</button>
+    </form>
+  </td>
 </tr>
 <% } %>
 </tbody>
@@ -380,10 +381,9 @@ Change the table body i.e. `<tbody>`
 
 Here we are looping through `urls` and displaying them on the table.
 
-Reload the index page, and you should see the long URLs that were previously saved to the database.
+Reload the index page, and you should see the long URL(s) that were previously saved to the database.
 
-![loop_url_preview.png](https://cdn.hashnode.com/res/hashnode/image/upload/v1627729457315/sjS2Agq1u.png)
-
+![loop_url_preview.png](https://cdn.hashnode.com/res/hashnode/image/upload/v1627732512352/fQ22i_e9p.png)
 Clicking a shortUrl link will display xpresser's default `404 Error Page` and this is because we haven't declared the
 route that will redirect our short URL to its long URL.
 
@@ -410,25 +410,25 @@ Given the example above `:shortId` represents `abcdef` and `uvwxyz`.
 Paste the  `redirect` method below in your `AppController`.
 
 ```js
-async
-redirect(http)
-{
-  // Get shortId from request params.
-  const {shortId} = http.params;
-  
-  // find url using shortId
-  const url = await Url.findOne({shortId});
-  
-  // if no url found then send a 404 error message.
-  if (!url) return http.status(404).send(`<h3>Short url not found!</h3>`);
-  
-  // Increment clicks count.
-  await url.updateRaw({
-    $inc: {clicks: 1}
-  });
-  
-  // redirect to long url
-  return http.redirect(url.data.url);
+module.exports = {
+  async redirect(http) {
+    // Get shortId from request params.
+    const {shortId} = http.params;
+    
+    // find url using shortId
+    const url = await Url.findOne({shortId});
+    
+    // if no url found then send a 404 error message.
+    if (!url) return http.status(404).send(`<h3>Short url not found!</h3>`);
+    
+    // Increment clicks count.
+    await url.updateRaw({
+      $inc: {clicks: 1}
+    });
+    
+    // redirect to long url
+    return http.redirect(url.data.url);
+  }
 }
 ```
 
