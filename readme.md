@@ -1,4 +1,7 @@
-## Create Project
+## What is a url shortener?
+A URL shortener is a simple tool that takes a long URL and turns it into whatever URL you would like it to be.
+
+## Lets get started!
 
 Create a new xpresserjs project using the `xjs-cli` Command line tool
 
