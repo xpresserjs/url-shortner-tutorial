@@ -1,4 +1,5 @@
 ## What is a url shortener?
+
 A URL shortener is a simple tool that takes a long URL and turns it into whatever URL you would like it to be.
 
 ## Lets get started!
@@ -21,7 +22,8 @@ Project Boilerplate: Simple App (Hello World, No views)
 ## Database
 
 This tutorial will make use of **MongoDB** using **xpress-mongo** a lightweight ODM for Nodejs MongoDB.
-<br>Note: We assume you are already familiar with the MongoDB Ecosystem.
+<br>Note: We assume you are already familiar with the MongoDB Ecosystem and have mongodb already installed in your
+machine.
 
 ### Setup Database Connection
 
@@ -48,6 +50,8 @@ Create a **plugins.json** file in your **backend** folder. i.e. `backend/plugins
   "npm://@xpresser/xpress-mongo": true
 }
 ```
+
+This file tells `xpresser` that we want to use `@xpresser/xpress-mongo` plugin.
 
 ## Configure
 
@@ -161,9 +165,11 @@ this will create a .ejs file @ `backend/views/index.ejs`. Paste the code below i
 </html>
 ```
 
+The above is a simple HTML page that shows a form to shorten urls with a table displaying shortened urls.
+
 ## Control Requests
 
-Empty file: `backend/controllers/AppController.js` and paste the content below.
+Empty file: `backend/controllers/AppController.js` and paste the code below.
 
 ```javascript
 module.exports = {
@@ -193,7 +199,7 @@ Let's make this work with real values from the database.
 
 ### Create Url Model
 
-To create a model
+To create a model, run the command:
 
 ```shell
 xjs make:model Url
@@ -204,7 +210,7 @@ Creates a model @ `backend/models/Url.js`.
 ### Adding Database Schema
 
 In your new model you will see default fields: `updatedAt` & `createdAt`. we need to add other fields like `url`
-, `shortId` & `clicks` like so
+, `shortId` & `clicks`.
 
 Note: The `updatedAt` field is not needed.
 
@@ -220,23 +226,22 @@ schema = {
 Your model file should look exactly like
 
 ```javascript
-const {is} = require('xpress-mongo');
-const {DBCollection, is} = require('@xpresser/xpress-mongo');
+const { is, XMongoModel } = require("xpress-mongo");
+const { UseCollection } = require("@xpresser/xpress-mongo");
 
-/**
- * Url Model Class
- */
-class Url extends DBCollection('urls') {
-  
+class Url extends XMongoModel {
   // Set Model Schema
   static schema = {
     url: is.String().required(),
     shortId: is.String().required(),
     clicks: is.Number().required(),
-    createdAt: is.Date().required(),
+    createdAt: is.Date().required()
   };
-
 }
+
+// Map Model to Collection `urls`
+// .native() will be made available for use.
+UseCollection(Url, "urls");
 
 module.exports = Url;
 ```
