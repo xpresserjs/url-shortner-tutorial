@@ -491,3 +491,5 @@ module.exports = {
 Refresh your browser and try the delete feature.
 
 ##### Hurray!! you now have your own URL shortener Application
+
+Git Repo: [https://github.com/xpresserjs/url-shortner-tutorial](https://github.com/xpresserjs/url-shortner-tutorial)
