@@ -226,8 +226,8 @@ schema = {
 Your model file should look exactly like
 
 ```javascript
-const { is, XMongoModel } = require("xpress-mongo");
-const { UseCollection } = require("@xpresser/xpress-mongo");
+const {is, XMongoModel} = require("xpress-mongo");
+const {UseCollection} = require("@xpresser/xpress-mongo");
 
 class Url extends XMongoModel {
   // Set Model Schema
@@ -297,7 +297,7 @@ since  `nodemon` does that for you.
 
 Refresh your browser, Then shorten a long url.
 
-A look alike of the log below should show in your log after the request redirects back if successful.
+A look alike of the log below should show in your xpresser console logs before the request redirects back.
 
 ```
 Url {
@@ -344,11 +344,22 @@ Change the table body i.e. `<tbody>`
 <tbody class="mt-3">
 <tr>
   <td class="p-2">
-    <a href="https://xpressserjs.com/xpress-mongo" class="text-blue-800">
-      https://xpressserjs.com/xpress-mongo</a>
+    <a href="#" target="_blank" class="text-blue-800">
+      /AyXvu
+    </a>
+    <br>
+    <small class="text-gray-500">
+      https://xpresserjs.com/xpress-mongo/events
+    </small>
   </td>
-  <td class="p-2">GMSHDb</td>
-  <td class="p-2">1</td>
+  <td class="p-2">AyXvu</td>
+  <td class="p-2 text-green-600 pl-5">22</td>
+  <td>
+    <form method="POST" action="/delete" onsubmit="return confirmDeleteUrl(this)">
+      <input type="hidden" name="shortId" value="realShortId">
+      <button class="text-red-600">delete</button>
+    </form>
+  </td>
 </tr>
 </tbody>
 ```
