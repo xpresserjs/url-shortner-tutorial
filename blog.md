@@ -22,11 +22,13 @@ This tutorial will make use of **MongoDB** using **xpress-mongo** a lightweight 
 
 ### Setup Database Connection
 
-For quick database setup we will use xpresser's **official xpress-mongo
-plugin**: [@xpresser/xpress-mongo](https://www.npmjs.com/package/@xpresser/xpress-mongo). Following the installation
-instructions in the plugin's repository, we need to install `xpresser-mongo` and `@xpress-mongo/xpress-mongo`
+For quick database setup we will use xpresser's **official** `xpress-mongo`
+plugin: `@xpresser/xpress-mongo`
 
-- **[xpresser-mongo](https://www.npmjs.com/package/xpress-mongo)** - A lightweight ODM for Nodejs MongoDB.
+Following the installation instructions on the npm page, we need to install `xpress-mongo`
+and `@xpresser/xpress-mongo`
+
+- **[xpress-mongo](https://www.npmjs.com/package/xpress-mongo)** - A Nodejs lightweight ODM for  MongoDB.
 - **[@xpresser/xpress-mongo](https://www.npmjs.com/package/@xpresser/xpress-mongo)** - Xpresser's Plugin that connects
   to MongoDB using xpress-mongo and provides the Connection pool throughout your application's lifecycle.
 
@@ -46,7 +48,7 @@ Create a **plugins.json** file in your **backend** folder. i.e. `backend/plugins
 
 ## Configure
 
-Let's add/modify our apps configuration. Goto File: **config.js**
+Let's modify our configuration. Goto File: **config.js**
 
 #### Change Name
 
@@ -177,10 +179,10 @@ module.exports = {
 
 ### Preview
 
-Run `nodemon app.js` in project root folder and click the server url to preview the html in `index.ejs`
+Run `nodemon app.js` in the project root folder and click the server URL to preview the HTML in `index.ejs`
 i.e. [http://localhost:3000](http://localhost:3000)
 
-![index_preview.png](https://cdn.hashnode.com/res/hashnode/image/upload/v1627641181079/jpnw1GgRy.png)
+![index_preview.png](https://cdn.hashnode.com/res/hashnode/image/upload/v1627731764890/OaCCzfe-_.png)
 
 ## Making it work
 
@@ -276,8 +278,8 @@ module.exports = {
 ```
 
 - First, Get the `url` sent by the frontend form.
-- Generate short url using xpresser's `randomStr` helper.
-- Try adding a new document to the database. Logs error or new url document.
+- Generate a shortId using xpresser's `randomStr` helper.
+- Try adding a new document to the database. Logs error or new URL document.
 - Redirect back to sender i.e. frontend.
 
 #### Let's test the progress so far.
@@ -305,7 +307,7 @@ The data above is saved to your database but our `index.ejs` does not show it ye
 dynamic values from the database.
 
 Remember our `index.ejs` is rendered by the `AppController@index` controller route action. So that is where we will get
-list of urls from the database and provide it to `index.ejs`
+a list of URLs from the database and provide it to `index.ejs`
 
 Modify the `index` method in `AppController` to look like so:
 
@@ -378,23 +380,23 @@ Change the table body i.e. `<tbody>`
 
 Here we are looping through `urls` and displaying them on the table.
 
-Reload the index page, and you should see the long urls that was previously saved to the database.
+Reload the index page, and you should see the long URLs that were previously saved to the database.
 
 ![loop_url_preview.png](https://cdn.hashnode.com/res/hashnode/image/upload/v1627729457315/sjS2Agq1u.png)
 
 Clicking a shortUrl link will display xpresser's default `404 Error Page` and this is because we haven't declared the
-route that will redirect our short url to it's long url.
+route that will redirect our short URL to its long URL.
 
-## Handling short url request.
+## Handling short URL requests.
 
-Let's create a route that will handle a short url. Add the route below at the end of your routes file.
+Let's create a route that will handle a short URL. Add the route below at the end of your routes file.
 
 ```js
 router.get("/:shortId", "App@redirect");
 ```
 
 This means that we want the `redirect` method in `AppController` to handle GET request sent to `/:shortId`
-<br>Note: `:shortId` in the url indicates a dynamic route parameter.
+<br>Note: `:shortId` in the URL indicates a dynamic route parameter.
 
 ```
 http://localhost:3000/abcdef
@@ -432,11 +434,11 @@ redirect(http)
 
 - First, we grab the `shortId` from the route url params.
 - Find the url using xpress-mongo's `findOne` which returns a model instance when found or `null` if not found.
-- If result from db is `null` we return a 404 response.
+- If the result from DB is `null` we return a 404 response.
 - Next, increment the clicks count.
-- Redirect to long url.
+- Redirect to long URL.
 
-Now Refresh your browser and click any of the short links. You will be redirected to the long url and the clicks count
+Now Refresh your browser and click any of the short links. You will be redirected to the long URL and the clicks count
 should update also.
 
 ## Delete Url
@@ -444,7 +446,7 @@ should update also.
 The delete button when clicked and confirmed will show a `/delete` **404 Error Page** and this is because we haven't
 declared a route & controller action for it yet.
 
-Let's add a POST `/delete` route before our `redirect` route. Your routes file should be looking like.
+Let's add a POST `/delete` route before our `redirect` route. Your route file should be looking like this.
 
 ```js
 const {getInstanceRouter} = require("xpresser");
