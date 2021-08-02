@@ -2,7 +2,7 @@ const Url = require("../models/url");
 
 /**
  * App Controller
- * @type {import("xpresser/types/http").Controller.Object}
+ * @type {import('xpresser/types/http').Controller.Object}
  */
 module.exports = {
   name: "AppController",

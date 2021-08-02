@@ -495,7 +495,7 @@ Paste the `delete` method below in your `AppController`.
 
 ```js
 module.exports = {
-  async delete() {
+  async delete(http) {
     // Get shortId from request body.
     const shortId = http.body("shortId");
     
