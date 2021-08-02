@@ -1,5 +1,7 @@
 ## What is a url shortener?
 
+Blog Post: [https://blog.xpresserjs.com/build-a-url-shortener-with-xpresserjs](https://blog.xpresserjs.com/build-a-url-shortener-with-xpresserjs)
+
 A URL shortener is a simple tool that takes a long URL and turns it into whatever URL you would like it to be.
 
 ## Lets get started!
