@@ -264,7 +264,12 @@ This simply means that we want the `shorten` method in `AppController` to handle
 
 ## Add shorten method
 
-Paste the  `shorten` method below in your `AppController`.
+Before we add the shorten method, lets import the `Url` model at the top of `AppController`
+```javascript
+const Url = require("../models/Url");
+```
+
+Then Paste the  `shorten` method below in your `AppController`.
 
 ```javascript
 module.exports = {
